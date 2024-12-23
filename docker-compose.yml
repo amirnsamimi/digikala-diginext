@@ -1,12 +1,17 @@
 version: "3.9"
-
 services:
   nextjs-app:
     build:
       context: .
     volumes:
+      # Mount the app source code
       - .:/app
+      # Avoid overwriting node_modules with an empty directory
       - /app/node_modules
     ports:
       - "3000:3000"
     command: pnpm run dev
+    environment:
+      # Enable polling to detect file changes
+      CHOKIDAR_USEPOLLING: "true"
+      NODE_ENV: "development"

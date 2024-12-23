@@ -2,20 +2,24 @@ FROM node:23-alpine AS base
 
 RUN npm install -g pnpm
 
-WORKDIR /src
+WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-FROM node:23-alpine 
+FROM node:23-alpine AS app
 
-WORKDIR /src
+RUN npm install -g pnpm
+
+WORKDIR /app
 
 COPY . .
 
-COPY --from=base /src/node_modules ./node_modules
+COPY --from=base /app/node_modules ./node_modules
 
-EXPOSE 4000
+
+EXPOSE 3000
+
 
 CMD [ "pnpm", "run", "dev" ]
