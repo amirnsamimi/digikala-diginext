@@ -1,9 +1,13 @@
-import React from 'react'
+'use client'
+import useDeviceDetect from '~/hooks/useDeviceDetect'
 
 const Page = () => {
+
+  const { isMobile } = useDeviceDetect()
+
   return (
     <div>
-      testsadasd
+     {isMobile ? 'mobile' : 'desktop'} 
     </div>
   )
 }
